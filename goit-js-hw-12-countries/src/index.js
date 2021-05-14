@@ -18,16 +18,19 @@ refs.inputEl.addEventListener('input', debounce(onInputSearch,5000));
 
 
 function onInputSearch(e) {
-    const input = e.currentTarget;
-            const searchQuery = input.value;
-             console.log(searchQuery);
+    
+        const input = e.currentTarget;
+        const searchQuery = input.value;
+        console.log(searchQuery);
+             
+    
 
     API.fetchCountries(searchQuery)
         .then(renderCounriesCard)
         .catch(onFetchError)
-         .finally(() => { 
-                 setTimeout(() => {input.value = " " },2000)
-         });
+        //  .finally(() => { 
+        //          setTimeout(() => {input.value = " " },2000)
+        //  });
     
 }
 
