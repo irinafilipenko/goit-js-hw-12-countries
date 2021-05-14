@@ -1,41 +1,44 @@
 import './styles.css';
 import cardTemplate from './templates/countrie.hbs';
+import cardListTemplate from './templates/many-countries.hbs';
+import API from './js/fetchCountries';
+import getRefs from './js/get-refs';
+import debounce from 'lodash.debounce';
 
-var debounce = require('lodash.debounce');
 
-const cardContainerEl = document.querySelector('.cardContainer');
-const inputEl = document.querySelector('.input');
+//  var debounce = require('lodash.debounce');
+  console.log(debounce);
+// console.log(cardListTemplate);
 
-inputEl.addEventListener('input', onInputSearch);
-const name = '';
+
+const refs = getRefs();
+
+refs.inputEl.addEventListener('input',  _.debounce(onInputSearch,5000));
+
 
 function onInputSearch(e) {
-    e.preventDefault();
-    
-    const searchQuery = e.currentTarget.value;
-    console.log(searchQuery);
+    const input = e.currentTarget;
+            const searchQuery = input.value;
+             console.log(searchQuery);
 
- fetchCountries(searchQuery)
-    .then(renderCounriesCard)
-    .catch(error => console.log(console.error()));
+    API.fetchCountries(searchQuery)
+        .then(renderCounriesCard)
+        .catch(onFetchError)
+        .finally(() => { 
+                setTimeout(() => {input.value = " " },2000)
+        });
+    
 }
 
- 
 
-
-
-function fetchCountries(name) {
-  return    fetch(`https://restcountries.eu/rest/v2/name/${name}`).then(data => {
-    return data.json()
-    })
-    // .then(renderCounriesCard)
-    // .catch(error => {
-    //     console.log(error)
-    // });
-  }
 
 function renderCounriesCard(country) {
-const markup = cardTemplate(country);
-        console.log(markup);
-        cardContainerEl.insertAdjacentHTML('beforeend', markup);
+    // const markup = cardTemplate(country);
+    const markup = cardListTemplate(country);
+        // console.log(markup);
+        refs.cardContainerEl.insertAdjacentHTML('beforeend', markup);
+}
+
+function onFetchError(error) {
+     alert('ой-ой, что то не так') ;
 }
