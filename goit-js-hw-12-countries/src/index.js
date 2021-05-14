@@ -25,11 +25,18 @@ function onInputSearch(e) {
     const input = e.target;
   const searchQuery = input.value;
   console.log(searchQuery);
-   
-    API.fetchCountries(searchQuery)
-         .then(renderCounriesCard)
-          .catch(onFetchError)
+  if (searchQuery === ' ') {
+    return;
+  }
+  else {
     
+  return  API.fetchCountries(searchQuery)
+      .then(renderCounriesCard)
+      .catch(onFetchError)
+  //     .finally(() => {
+  //         () => {input.value = " " }
+  //  });
+  };
 }
 
 
@@ -40,15 +47,15 @@ function renderCounriesCard(country) {
                       
         refs.cardContainerEl.insertAdjacentHTML('beforeend', markup);
     }
-           if (country.length >2 && country.length <10) {
+           if (country.length >= 2 && country.length <= 10) {
        const  markup = cardListTemplate(country);
         
        refs.cardContainerEl.insertAdjacentHTML('beforeend', markup);
      }
      
-       else {
-          onFetchError();
-      }
+      //   else {
+      //      onFetchError();
+      //  }
    
     };
 
