@@ -13,7 +13,8 @@ import debounce from 'lodash.debounce';
 
 const refs = getRefs();
 
-refs.inputEl.addEventListener('input',  _.debounce(onInputSearch,5000));
+   
+refs.inputEl.addEventListener('input', debounce(onInputSearch,5000));
 
 
 function onInputSearch(e) {
@@ -24,19 +25,28 @@ function onInputSearch(e) {
     API.fetchCountries(searchQuery)
         .then(renderCounriesCard)
         .catch(onFetchError)
-        .finally(() => { 
-                setTimeout(() => {input.value = " " },2000)
-        });
+         .finally(() => { 
+                 setTimeout(() => {input.value = " " },2000)
+         });
     
 }
 
 
 
 function renderCounriesCard(country) {
-    // const markup = cardTemplate(country);
-    const markup = cardListTemplate(country);
+    console.log(country.length);
+    // if (country.length === 1) {
+         const markup = cardTemplate(country);
+    // const markup = cardListTemplate(country);
         // console.log(markup);
         refs.cardContainerEl.insertAdjacentHTML('beforeend', markup);
+    // }
+    // else if (country.length <= 10) {
+    //     markup = cardListTemplate(country);
+    //    refs.cardContainerEl.insertAdjacentHTML('beforeend', markup);
+    // }
+
+    
 }
 
 function onFetchError(error) {

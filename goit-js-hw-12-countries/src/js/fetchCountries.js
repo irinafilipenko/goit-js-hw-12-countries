@@ -4,8 +4,9 @@ function fetchCountries(name) {
     
     const url = `${baseUrl}/name/${name}`;
     return fetch(url).then(response => {
-        console.log(response);
-    return response.json()
+        // console.log(response);
+        return response.json()
+        
     })
     
 }
