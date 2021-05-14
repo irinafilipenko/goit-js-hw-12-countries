@@ -13,45 +13,50 @@ import debounce from 'lodash.debounce';
 
 const refs = getRefs();
 
-   
-refs.inputEl.addEventListener('input', debounce(onInputSearch,5000));
+refs.inputEl.addEventListener(
+  'input',
+  debounce(e => onInputSearch(e), 500),
+);
 
 
 function onInputSearch(e) {
-    
-        const input = e.currentTarget;
-        const searchQuery = input.value;
-        console.log(searchQuery);
-             
-    
-
+    clearContainer();
+ 
+    const input = e.target;
+  const searchQuery = input.value;
+  console.log(searchQuery);
+   
     API.fetchCountries(searchQuery)
-        .then(renderCounriesCard)
-        .catch(onFetchError)
-        //  .finally(() => { 
-        //          setTimeout(() => {input.value = " " },2000)
-        //  });
+         .then(renderCounriesCard)
+          .catch(onFetchError)
     
 }
-
 
 
 function renderCounriesCard(country) {
     console.log(country.length);
-    // if (country.length === 1) {
+     if (country.length === 1) {
          const markup = cardTemplate(country);
-    // const markup = cardListTemplate(country);
-        // console.log(markup);
+                      
         refs.cardContainerEl.insertAdjacentHTML('beforeend', markup);
-    // }
-    // else if (country.length <= 10) {
-    //     markup = cardListTemplate(country);
-    //    refs.cardContainerEl.insertAdjacentHTML('beforeend', markup);
-    // }
-
-    
-}
+    }
+           if (country.length >2 && country.length <10) {
+       const  markup = cardListTemplate(country);
+        
+       refs.cardContainerEl.insertAdjacentHTML('beforeend', markup);
+     }
+     
+       else {
+          onFetchError();
+      }
+   
+    };
 
 function onFetchError(error) {
      alert('ой-ой, что то не так') ;
 }
+
+function clearContainer(){
+    refs.cardContainerEl.innerHTML = ' ';
+};
+

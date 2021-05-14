@@ -4,10 +4,16 @@ function fetchCountries(name) {
     
     const url = `${baseUrl}/name/${name}`;
     return fetch(url).then(response => {
-        // console.log(response);
-        return response.json()
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error(response.statusText);
+            })
+};
+         
+             
         
-    })
-    
-}
-export default { fetchCountries };
+        export default { fetchCountries };
+
+
+      
