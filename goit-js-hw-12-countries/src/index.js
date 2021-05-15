@@ -21,7 +21,13 @@ function onInputSearch(e) {
   const input = e.target;
   const searchQuery = input.value;
 
-  API.fetchCountries(searchQuery).then(renderCounriesCard).catch(onFetchError);
+  if (!searchQuery) {
+    return;
+  } else {
+    API.fetchCountries(searchQuery)
+      .then(renderCounriesCard)
+      .catch(onFetchError);
+  }
 }
 
 function renderCounriesCard(country) {
@@ -43,8 +49,10 @@ function renderCounriesCard(country) {
   }
 }
 
-function onFetchError(error) {
-  alert('404 Not found');
+function onFetchError() {
+  error({
+    text: ' Invalid request',
+  });
 }
 
 function clearContainer() {
